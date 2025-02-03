@@ -1,0 +1,30 @@
+{
+  "name": "wealthify",
+  "version": "1.0.0",
+  "description": "## Submission team kami untuk Pair Project Hacktiv8 Phase 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dekalouis/Wealthify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dekalouis/Wealthify/issues"
+  },
+  "homepage": "https://github.com/dekalouis/Wealthify#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pg": "^8.13.1",
+    "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "sequelize-cli": "^6.6.2"
+  }
+}
