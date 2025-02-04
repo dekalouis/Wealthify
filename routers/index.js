@@ -9,7 +9,7 @@ const router = express.Router();
 
 //! NANTI DIPISAH
 //buat display landing
-router.use("/", Controller.landing);
+router.get("/", Controller.landing);
 
 //*AUTH
 // Register page
