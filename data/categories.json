@@ -1,0 +1,22 @@
+[{
+    "id": 1,
+    "title": "Banking",
+    "details": "Companies focused on the banking sector"
+
+},{
+    "id": 2,
+    "title": "Mining",
+    "details": "Companies focused on mining sector"
+
+},{
+    "id": 3,
+    "title": "Utility",
+    "details": "Companies focused on helping other companies"
+
+},{
+    "id": 4,
+    "title": "Others",
+    "details": "Companies not in anyother categories"
+
+}
+]

@@ -1,0 +1,23 @@
+npx sequelize-cli model:generate --name User --attributes email:string,password:string,role:string
+
+npx sequelize-cli model:generate --name Company --attributes name:string,companyLogo:string,location:string,email:string,description:text
+
+npx sequelize-cli model:generate --name UserProfile --attributes userId:integer,fullName:string,phoneNumber:string,address:string
+
+npx sequelize-cli model:generate --name Investment --attributes name:string,description:text,InvestmentType:string,amount:integer
+
+npx sequelize-cli model:generate --name UserCompany --attributes investmentAmount:integer
+
+===migrate tambahan
+npx sequelize-cli migration:generate --name add-fk-to-Investment (userId and companyId)
+npx sequelize-cli migration:generate --name add-fk-to-UserCompany (userId and companyId)
+
+===seeding
+npx sequelize-cli seed:generate --name demo-user
+npx sequelize-cli seed:generate --name demo-company
+
+npx sequelize-cli seed:generate --name demo-profile
+npx sequelize-cli seed:generate --name demo-investment
+
+npx sequelize-cli seed:generate --name demo-usercompany
+
