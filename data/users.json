@@ -1,0 +1,21 @@
+[{
+    "id": 1,
+    "email": "joko@mail.com",
+    "password": "testpassword",
+    "role": "admin"
+},{
+    "id": 2,
+    "email": "abdul@mail.com",
+    "password": "testpassword",
+    "role": "admin"
+},{
+    "id": 3,
+    "email": "ilham@mail.com",
+    "password": "testpassword",
+    "role": "admin"
+},{
+    "id": 4,
+    "email": "ucup@mail.com",
+    "password": "testpassword",
+    "role": "user"
+}]
