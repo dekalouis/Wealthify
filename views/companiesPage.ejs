@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wealthify - Stocks</title>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Company Name</th>
+          <th>Location</th>
+          <th>Description</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% companies.forEach((company, i) => {%>
+        <tr>
+          <!-- <td><%= company.%></td> -->
+          <td>Company Name</td>
+          <td>Location</td>
+          <td>Description</td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>

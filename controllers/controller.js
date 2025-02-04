@@ -1,3 +1,12 @@
+const {
+  Category,
+  Company,
+  Investment,
+  User,
+  UserProfile,
+} = require("../models");
+const { Op } = require("sequelize");
+
 class Controller {
   static async landing(req, res) {
     try {
@@ -35,9 +44,16 @@ class Controller {
     }
   }
 
+  //! dikerjain
   static async companiesPage(req, res) {
     try {
-      res.send(`daftar company!`);
+      //   res.send(`daftar company!`);
+      //   const options = {
+      //     include: Category,
+      //   };
+      const companies = await Company.findAll();
+      res.send(companies);
+      //   res.render("companiesPage", { companies });
     } catch (err) {
       console.log(err);
       res.send(err);
