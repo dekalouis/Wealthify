@@ -19,8 +19,8 @@ router.get("/login", Controller.userLogin);
 router.post("/login", Controller.loggedIn);
 
 //*PROFILE
-// buat show user profile
-router.get("/profile", Controller.profilePage);
+// buat show user profile (PAKAI 1 dulu)
+router.get("/profile/:id", Controller.profilePage);
 
 //?COMPANY ==== UDAH harusnya kurang lebih
 // List semua companies

@@ -55,9 +55,17 @@ class Controller {
     }
   }
 
+  //!!! KERJAINNNNN============
   static async profilePage(req, res) {
     try {
-      res.send(`profile page!!`);
+      // res.send(`profile page!!`);
+      const { id } = req.params;
+      const user = await User.findByPk(id, {
+        include: { model: UserProfile },
+      });
+
+      // res.send(user);
+      res.render("profile", { user });
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -97,7 +105,7 @@ class Controller {
       res.send(err);
     }
   }
-
+  //! UDAH
   static async showInvestmentForm(req, res) {
     try {
       // res.send(`buat nginvestnyaa!`);
@@ -114,7 +122,7 @@ class Controller {
       res.send(err);
     }
   }
-
+  //! UDAH
   static async createInvestment(req, res) {
     try {
       // res.send(`BERHASIL DIINVEST!`);
