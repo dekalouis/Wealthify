@@ -12,16 +12,17 @@ const router = express.Router();
 router.get("/", Controller.landing);
 
 //*AUTH
-// Register page
+// Register page Login page
 router.get("/register", Controller.registerUser);
-// Login page
+router.post("/register", Controller.addUser);
 router.get("/login", Controller.userLogin);
+router.post("/login", Controller.loggedIn);
 
 //*PROFILE
 // buat show user profile
 router.get("/profile", Controller.profilePage);
 
-//*COMPANY
+//?COMPANY ==== UDAH harusnya kurang lebih
 // List semua companies
 router.get("/companies", Controller.companiesPage);
 // company details dr idnya
