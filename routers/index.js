@@ -33,8 +33,8 @@ router.post("/companies/:id/invest", Controller.createInvestment);
 //*Investment
 //list semua investment
 router.get("/investments", Controller.userInvestments);
-router.get("/investments/:id/edit", Controller.editInvestmentForm);
-router.post("/investments/:id/edit", Controller.updateInvestment);
-router.get("/investments/:id/delete", Controller.deleteInvestment);
+router.get("/investments/:investmentId/edit", Controller.editInvestmentForm);
+router.post("/investments/:investmentId/edit", Controller.updateInvestment);
+router.get("/investments/:investmentId/delete", Controller.deleteInvestment);
 
 module.exports = router;

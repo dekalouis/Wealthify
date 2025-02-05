@@ -1,5 +1,7 @@
 "use strict";
+
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Company extends Model {
     /**
@@ -8,8 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Company.belongsTo(models.Category);
+      Company.belongsToMany(models.User, {
+        through: sequelize.models.Investment,
+      })
     }
   }
   Company.init(

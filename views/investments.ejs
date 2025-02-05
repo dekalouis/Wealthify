@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment List</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+}
+
+.user-card {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #eef;
+    border-radius: 5px;
+}
+
+img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+    </style>
+</head>
+<body>
+    <h1>Investment List</h1>
+
+    <% investments.forEach((user) => { %>
+        <div class="user-card">
+            <h2><%= user.email %> (<%= user.role %>)</h2>
+            <p>Terdaftar sejak: <%= new Date(user.createdAt).toLocaleDateString() %></p>
+
+            <% if (user.Companies.length > 0) { %>
+                <h3>Investasi:</h3>
+                <ul>
+                    <% user.Companies.forEach((company, idx) => { %>
+                        <li>
+                            <img src="<%= company.companyLogo %>" alt="<%= company.name %> Logo" width="50">
+                            <strong><%= company.name %></strong> - <%= company.location %>
+                            <p><i><%= company.description %></i></p>
+                            <p>Jumlah Investasi: <strong>Rp <%= company.Investment.amount.toLocaleString() %></strong></p>
+                            <p>Tipe Investasi: <%= company.Investment.investmentType %></p>
+                            <p><small><%= company.Investment.description %></small></p>
+                        </li>
+
+                        <p>
+                            <a href="/investments/<%= company.Investment.id %>/edit">✏️ Edit</a> |
+                            <a href="/investments/<%= company.Investment.id %>/delete">❌ Delete</a>
+                        </p>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p><i>Belum memiliki investasi.</i></p>
+            <% } %>
+        </div>
+    <% }) %>
+</body>
+</html>

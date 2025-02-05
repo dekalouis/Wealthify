@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      InvestmentType: {
+      investmentType: {
         type: Sequelize.STRING,
         allowNull: false,
       },
