@@ -7,3 +7,6 @@ Tim kami termasuk:
 
 1. Deka Louis Rebaudo
 2. Moses Simanungkalit
+
+Database bernama "Wealthify"
+Silakan run `npm i`, `npx sequelize-cli db:create` dan lanjutkan migration dan seeding.
