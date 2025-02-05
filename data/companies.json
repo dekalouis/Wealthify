@@ -6,7 +6,7 @@
         "location": "Jakarta",
         "email": "hello@singarego.com",
         "description": "Perusahaan terbaik, selalu memberikan pelayanan terbaique.",
-        "categoryId": 2
+        "CategoryId": 1
     },
     {
         "id": 2,
@@ -15,7 +15,7 @@
         "location": "Soerabaja",
         "email": "hello@fotokantor.com",
         "description": "Jasa foto kantor supaya semakin ganteng.",
-        "categoryId": 3
+        "CategoryId": 3
     },
     {
         "id": 3,
@@ -24,7 +24,7 @@
         "location": "Moscow",
         "email": "hello@kucing.com",
         "description": "Kalau kucing saja tidur, kenapa Anda bangun?",
-        "categoryId": 1
+        "CategoryId": 1
     },
     {
         "id": 4,
@@ -33,7 +33,43 @@
         "location": "Rumah Hantu",
         "email": "hello@predatorair.com",
         "description": "kucing garong rawr",
-        "categoryId": 2
+        "CategoryId": 2
+    },
+    {
+        "id": 5,
+        "name": "Servis AC",
+        "companyLogo": "https://img.logoipsum.com/242.png",
+        "location": "Ujung Kulon",
+        "email": "hello@servisbos.com",
+        "description": "AC Anda kurang dingin? Rumah Anda Panas? Ke luar negeri solusinya",
+        "CategoryId": 3
+    },
+    {
+        "id": 6,
+        "name": "Developer Handal",
+        "companyLogo": "https://img.logoipsum.com/242.png",
+        "location": "Depok",
+        "email": "hello@devhandal.com",
+        "description": "Anda tidak butuh developer, and butuh belajar, silakan join hacktiv8",
+        "CategoryId": 4
+    },
+    {
+        "id": 7,
+        "name": "PT Menang Dasyat Sejahtera",
+        "companyLogo": "https://img.logoipsum.com/232.png",
+        "location": "Indonesia Raya",
+        "email": "hello@mss.com",
+        "description": "Apa kabar? DAHSYAT! Kami adalah MLM top level dengan jaminan Anda bisa posting video backdrop PARIS.",
+        "CategoryId": 4
+    },
+    {
+        "id": 8,
+        "name": "Bayar Sendiri Bos LLC",
+        "companyLogo": "https://img.logoipsum.com/236.png",
+        "location": "Global",
+        "email": "hello@pbayarbos.com",
+        "description": "Kenapa Anda butuh kami? Karena Anda bayar!",
+        "CategoryId": 1
     }
 ]
 

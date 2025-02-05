@@ -1,32 +1,32 @@
 [{
     "name": "jokoinvestsingareog",
     "description": "karena kurang dana, joko invest singa reog 15rb",
-    "companyId": 1,
-    "userId": 1,
+    "CompanyId": 1,
+    "UserId": 1,
     "InvestmentType": "low risk",
     "amount": 15000
 
 },{
     "name": "jokoinvestkucingtidur",
     "description": "baru gajian nih, jadi Joko invest 30rb di kucing tidur",
-    "companyId": 3,
-    "userId": 1,
+    "CompanyId": 3,
+    "UserId": 1,
     "InvestmentType": "low risk",
     "amount": 30000
 
 },{
     "name": "ucupinvest",
     "description": "ucup gasuka saham, judi katanya, tapi diam2 invest kucingtidur",
-    "companyId": 3,
-    "userId": 4,
+    "CompanyId": 3,
+    "UserId": 4,
     "InvestmentType": "high risk",
     "amount": 20000
 
 },{
     "name": "ilhamfoto",
     "description": "ilham fotoin kantor dulu ya",
-    "companyId": 2,
-    "userId": 2,
+    "CompanyId": 2,
+    "UserId": 2,
     "InvestmentType": "high risk",
     "amount": 40000
 

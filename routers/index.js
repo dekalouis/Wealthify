@@ -35,6 +35,6 @@ router.post("/companies/:id/invest", Controller.createInvestment);
 router.get("/investments", Controller.userInvestments);
 router.get("/investments/:id/edit", Controller.editInvestmentForm);
 router.post("/investments/:id/edit", Controller.updateInvestment);
-router.post("/investments/:id/delete", Controller.deleteInvestment);
+router.get("/investments/:id/delete", Controller.deleteInvestment);
 
 module.exports = router;

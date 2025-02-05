@@ -2,24 +2,24 @@
     "fullName": "Joko",
     "phoneNumber": "0811118881",
     "address": "Jalan Pulang",
-    "userId": 1
+    "UserId": 1
   
 },{
     "fullName": "Abdul",
     "phoneNumber": "0899999999",
     "address": "Jalan Puan Kelana",
-    "userId": 2
+    "UserId": 2
   
 },{
     "fullName": "Ilham",
     "phoneNumber": "0879989898",
     "address": "Jalan jalan ke kota",
-    "userId": 3
+    "UserId": 3
   
 },{
     "fullName": "Ucup",
     "phoneNumber": "08121",
     "address": "Jalanku mana jalanmu",
-    "userId": 4
+    "UserId": 4
   
 }]
