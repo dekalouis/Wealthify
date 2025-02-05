@@ -48,12 +48,11 @@ class Controller {
   static async companiesPage(req, res) {
     try {
       //   res.send(`daftar company!`);
-      //   const options = {
-      //     include: Category,
-      //   };
+
       const companies = await Company.findAll();
-      res.send(companies);
-      //   res.render("companiesPage", { companies });
+      //   console.log(companies[0].name, `---`, companies[0].companyLogo);
+      //   res.send(companies);
+      res.render("companiesPage", { companies });
     } catch (err) {
       console.log(err);
       res.send(err);

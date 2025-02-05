@@ -6,7 +6,9 @@
     <title>Wealthify - Stocks</title>
   </head>
   <body>
-    <table>
+    <h1>Stocks</h1>
+    <h3>Pilih saham yang mau kamu cek lebih lanjut/beli</h3>
+    <table border="1px">
       <thead>
         <tr>
           <th>Logo</th>
@@ -20,10 +22,16 @@
       <tbody>
         <% companies.forEach((company, i) => {%>
         <tr>
-          <!-- <td><%= company.%></td> -->
-          <td>Company Name</td>
-          <td>Location</td>
-          <td>Description</td>
+          <td>
+            <img
+              src="<%= company.companyLogo %>"
+              alt=""
+              style="max-width: 60px"
+            />
+          </td>
+          <td><%= company.name%></td>
+          <td><%= company.location%></td>
+          <td><%= company.description%></td>
         </tr>
         <% }) %>
       </tbody>

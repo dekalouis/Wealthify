@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "Singa Reog",
-        "companyLogo": "https://logoipsum.com/artwork/347",
+        "companyLogo": "https://img.logoipsum.com/347.png",
         "location": "Jakarta",
         "email": "hello@singarego.com",
         "description": "Perusahaan terbaik, selalu memberikan pelayanan terbaique.",
@@ -11,7 +11,7 @@
     {
         "id": 2,
         "name": "Foto Kantor",
-        "companyLogo": "https://logoipsum.com/artwork/344",
+        "companyLogo": "https://img.logoipsum.com/344.png",
         "location": "Soerabaja",
         "email": "hello@fotokantor.com",
         "description": "Jasa foto kantor supaya semakin ganteng.",
@@ -20,7 +20,7 @@
     {
         "id": 3,
         "name": "Kucing Tidur",
-        "companyLogo": "https://logoipsum.com/artwork/338",
+        "companyLogo": "https://img.logoipsum.com/338.png",
         "location": "Moscow",
         "email": "hello@kucing.com",
         "description": "Kalau kucing saja tidur, kenapa Anda bangun?",
@@ -29,7 +29,7 @@
     {
         "id": 4,
         "name": "Predator Air Tawar",
-        "companyLogo": "https://logoipsum.com/artwork/328",
+        "companyLogo": "https://img.logoipsum.com/285.png",
         "location": "Rumah Hantu",
         "email": "hello@predatorair.com",
         "description": "kucing garong rawr",
