@@ -6,9 +6,10 @@ const {
   UserProfile,
 } = require("../models");
 const { Op } = require("sequelize");
-const user = require("../models/user");
+// const user = require("../models/user");
 const { formatRupiah } = require("../helpers/formatRupiah");
 const { formatDate } = require("../helpers/formatDate");
+const bcrypt = require("bcryptjs");
 
 class Controller {
   static async landing(req, res) {
@@ -23,7 +24,6 @@ class Controller {
 
   static async registerUser(req, res) {
     try {
-      // res.send(`RegisterPage!`);
       res.render("register");
     } catch (err) {
       console.log(err);
@@ -32,8 +32,18 @@ class Controller {
   }
 
   static async addUser(req, res) {
+    const { email, password, role, fullName, phoneNumber, address } = req.body;
     try {
-      res.send(`berhasil registrer!`);
+      const result = await User.create({ email, password, role });
+
+      await UserProfile.create({
+        fullName,
+        phoneNumber,
+        address,
+        UserId: result.id,
+      });
+      res.redirect("/");
+      // res.send(`berhasil registrer!`);
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -41,20 +51,57 @@ class Controller {
   }
 
   static async userLogin(req, res) {
+    const { error } = req.query;
     try {
+      res.render("login", { error });
       // res.send(`Login page!`);
-      res.render("login");
     } catch (err) {
       console.log(err);
       res.send(err);
     }
   }
+
   static async loggedIn(req, res) {
+    const { email, password } = req.body;
     try {
-      res.send(`berhasil Login!`);
+      const user = await User.findOne({ where: { email } });
+      console.log(user, "<<<< user");
+
+      if (user) {
+        const isValid = bcrypt.compareSync(password, user.password);
+
+        if (isValid) {
+          req.session.userId = user.id;
+          req.session.role = user.role;
+
+          return res.redirect("/companies");
+        } else {
+          const error = "Invalid Email / Password";
+          return res.redirect(`login/?error=${error}`);
+        }
+      } else {
+        const error = "Invalid Email / Password";
+        return res.redirect(`login/?error=${error}`);
+      }
     } catch (err) {
       console.log(err);
       res.send(err);
+    }
+  }
+
+  static async logOut(req, res) {
+    try {
+      await new Promise((resolve, reject) => {
+        req.session.destroy((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+  
+      res.redirect("/");
+    } catch (error) {
+      console.log(error);
+      res.send(error);
     }
   }
 

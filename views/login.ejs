@@ -30,6 +30,10 @@
             <h1 class="display-4 fw-bold">Login ke Wealthify</h1>
             <p class="lead">Masuk untuk mulai tracking investasimu.</p>
 
+            <% if (error) { %>
+              <p style="color: red;"><%= error %></p>
+            <% } %>
+
             <form action="/login" method="POST" class="mt-4">
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
