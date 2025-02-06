@@ -6,6 +6,7 @@ const {
   UserProfile,
 } = require("../models");
 const { Op } = require("sequelize");
+const user = require("../models/user");
 
 class Controller {
   static async landing(req, res) {
@@ -184,7 +185,26 @@ class Controller {
 
   static async userInvestments(req, res) {
     try {
-      res.send(`DAFTAR INVESTMENT PENGGUNA!`);
+      const investments = await User.findAll({
+        include: {
+          model: Company,
+          through: {
+            attributes: ["id", "name", "investmentType", "amount"], // Specify fields to include from the junction table https://sequelize.org/docs/v6/core-concepts/assocs/#foobelongstomanybar--through-baz-
+          },
+        },
+      });
+
+      // const investments = await Investment.findAll({
+      //   include: {
+      //     model: User,
+      //     include: {
+      //       model: Company
+      //     }
+      //   }
+      // })
+
+      // res.send(investments);
+      res.render("investments", { investments });
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -192,8 +212,17 @@ class Controller {
   }
 
   static async editInvestmentForm(req, res) {
+    const { investmentId } = req.params;
     try {
-      res.send(`EDit investment yang udah ada!`);
+      const companies = await Company.findAll();
+      const investment = await Investment.findOne({
+        where: { id: investmentId },
+        attributes: ["id", "name", "description","investmentType", "amount", "CompanyId"],
+      });
+
+      res.render("investments-Edit", { investment, companies });
+      // res.send(companies);
+      // res.send(`EDit investment yang udah ada!`);
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -201,8 +230,16 @@ class Controller {
   }
 
   static async updateInvestment(req, res) {
+    const { investmentId } = req.params;
+    const { name, description, investmentType, amount, CompanyId } = req.body;
     try {
-      res.send(`UPDATE BERHAISL!`);
+      await Investment.update(
+        { name, description, investmentType, amount, CompanyId },
+        { where: { id: investmentId } }
+      );
+
+      // res.send(`UPDATE BERHASIL!`);
+      res.redirect("/investments");
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -210,8 +247,11 @@ class Controller {
   }
 
   static async deleteInvestment(req, res) {
+    const { investmentId } = req.params;
     try {
-      res.send(`DELETE AJA investmentnya!`);
+      await Investment.destroy({ where: { id: investmentId } });
+
+      res.redirect("/investment");
     } catch (err) {
       console.log(err);
       res.send(err);
