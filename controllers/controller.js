@@ -21,43 +21,6 @@ class Controller {
     }
   }
 
-  static async registerUser(req, res) {
-    try {
-      // res.send(`RegisterPage!`);
-      res.render("register");
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
-  static async addUser(req, res) {
-    try {
-      res.send(`berhasil registrer!`);
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
-  static async userLogin(req, res) {
-    try {
-      // res.send(`Login page!`);
-      res.render("login");
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-  static async loggedIn(req, res) {
-    try {
-      res.send(`berhasil Login!`);
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
   //!!! KERJAINNNNN============
   static async profilePage(req, res) {
     try {
@@ -150,6 +113,9 @@ class Controller {
       // console.log(req.body);
       const { id } = req.params;
       const { name, description, UserId, investmentType, amount } = req.body;
+
+
+      // console.log(req.body);
 
       const newInvestment = await Investment.create({
         name,
