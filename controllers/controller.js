@@ -124,8 +124,8 @@ class Controller {
 
   //! UDAH
   static async companiesPage(req, res) {
+    const { search, category } = req.query;
     try {
-      const { search, category } = req.query;
       let filter = {};
       let categoryFilter = {};
 
@@ -160,9 +160,9 @@ class Controller {
 
   //! UDAH
   static async companyDetail(req, res) {
+    const { id } = req.params;
     try {
       // res.send(`detil persuahaaaan!`);
-      const { id } = req.params;
       const company = await Company.findByPk(id, {
         include: [{ model: Category }],
       });
@@ -238,7 +238,18 @@ class Controller {
         },
       });
 
-      res.render("investments", { investments, formatRupiah, formatDate });
+      const totalInvestments = {};
+      for (const user of investments) {
+        const totalAmount = await Investment.getTotalInvestmentByUser(user.id);
+        totalInvestments[user.id] = totalAmount;
+      }
+
+      res.render("investments", {
+        investments,
+        totalInvestments,
+        formatRupiah,
+        formatDate,
+      });
     } catch (err) {
       console.log(err);
       res.send(err);
