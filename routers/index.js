@@ -4,6 +4,7 @@ const express = require("express");
 // const company = require("./company");
 // const investment = require("./investment");
 const Controller = require("../controllers/controller");
+const UserController = require("../controllers/UserController");
 
 const router = express.Router();
 
@@ -13,10 +14,10 @@ router.get("/", Controller.landing);
 
 //*AUTH
 // Register page Login page
-router.get("/register", Controller.registerUser);
-router.post("/register", Controller.addUser);
-router.get("/login", Controller.userLogin);
-router.post("/login", Controller.loggedIn);
+router.get("/register", UserController.registerForm);
+router.post("/register", UserController.postRegister);
+router.get("/login", UserController.loginForm);
+router.post("/login", UserController.postLogin);
 
 //*PROFILE
 // buat show user profile (PAKAI 1 dulu)
