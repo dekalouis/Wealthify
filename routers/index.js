@@ -15,8 +15,19 @@ router.get("/", Controller.landing);
 // Register page Login page
 router.get("/register", Controller.registerUser);
 router.post("/register", Controller.addUser);
+
+//Login page
 router.get("/login", Controller.userLogin);
 router.post("/login", Controller.loggedIn);
+
+router.use(function (req, res, next) {
+  if (!req.session.userId) {
+    const error = "Please Login First!";
+    res.redirect(`/login?error=${error}`);
+  } else {
+    next();
+  }
+});
 
 //*PROFILE
 // buat show user profile (PAKAI 1 dulu)
@@ -31,11 +42,24 @@ router.get("/companies/:id", Controller.companyDetail);
 router.get("/companies/:id/invest", Controller.showInvestmentForm);
 router.post("/companies/:id/invest", Controller.createInvestment);
 
+// kalau mau dibatasi dengan role = admin
+// router.use(function (req, res, next) {
+//     if (req.session.userId && req.session.role !== "admin" ) {
+//       const error = "You are not an admin!";
+//       res.redirect(`/login?error=${error}`);
+//     } else {
+//       next();
+//     }
+//   });
+
 //*Investment
 //list semua investment
 router.get("/investments", Controller.userInvestments);
 router.get("/investments/:investmentId/edit", Controller.editInvestmentForm);
 router.post("/investments/:investmentId/edit", Controller.updateInvestment);
 router.get("/investments/:investmentId/delete", Controller.deleteInvestment);
+
+// log out
+router.get("/logout", Controller.logOut);
 
 module.exports = router;
