@@ -16,5 +16,11 @@ const isLoggedIn = function (req, res, next) {
     next();
   }
 };
+const redirectIfLoggedIn = function (req, res, next) {
+  if (req.session.user) {
+    return res.redirect("/companies");
+  }
+  next();
+};
 
-module.exports = { isAdmin, isLoggedIn };
+module.exports = { isAdmin, isLoggedIn, redirectIfLoggedIn };

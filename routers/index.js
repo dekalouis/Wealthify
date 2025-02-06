@@ -5,28 +5,9 @@ const express = require("express");
 // const investment = require("./investment");
 const Controller = require("../controllers/controller");
 const UserController = require("../controllers/UserController");
-const { isLoggedIn, isAdmin } = require("../middleware");
+const { isLoggedIn, isAdmin, redirectIfLoggedIn } = require("../middleware");
 
 const router = express.Router();
-
-// //midlewaress
-// const isAdmin = function (req, res, next) {
-//     if (req.session.user && req.session.user.role === "admin") {
-//       next(); // Proceed if admin
-//     } else {
-//       const error = "You are not an admin!";
-//       res.redirect(`/login?error=${error}`);
-//     }
-//   };
-//   const isLoggedIn = function (req, res, next) {
-//     console.log(req.session);
-//     if (!req.session.user) {
-//       const error = "Please Login!";
-//       res.redirect(`/login?error=${error}`);
-//     } else {
-//       next();
-//     }
-//   };
 
 //! NANTI DIPISAH
 //buat display landing
@@ -35,11 +16,11 @@ router.get("/", Controller.landing);
 
 //*AUTH
 // Register page Login page
-router.get("/register", UserController.registerForm);
-router.post("/register", UserController.postRegister);
-router.get("/login", UserController.loginForm);
-router.post("/login", UserController.postLogin);
-router.get("/logout", UserController.getLogout);
+router.get("/register", redirectIfLoggedIn, UserController.registerForm);
+router.post("/register", redirectIfLoggedIn, UserController.postRegister);
+router.get("/login", redirectIfLoggedIn, UserController.loginForm);
+router.post("/login", redirectIfLoggedIn, UserController.postLogin);
+router.get("/logout", redirectIfLoggedIn, UserController.getLogout);
 
 // MIDDLEWARE SESSION
 router.use(isLoggedIn);
