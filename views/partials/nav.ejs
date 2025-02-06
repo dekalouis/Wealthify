@@ -16,7 +16,11 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white fw-bold" href="/profile/1">Profile</a>
+          <a class="nav-link text-white fw-bold" href="/profile/<%= user.id %>"
+            >Profile<% if (user.role === 'admin') { %>
+            <span class="badge bg-danger ms-2">ADMIN</span>
+            <% } %>
+          </a>
         </li>
       </ul>
     </div>
