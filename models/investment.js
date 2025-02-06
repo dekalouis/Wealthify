@@ -15,6 +15,18 @@ module.exports = (sequelize, DataTypes) => {
       Investment.belongsTo(models.Company, { foreignKey: "CompanyId" });
     }
 
+    static async getTotalInvestmentByUser(userId) {
+      const totalInvestment = await Investment.sum("amount", {
+        where: { UserId: userId },
+      });
+
+      if (totalInvestment === null) {
+        return 0;
+      } else {
+        return totalInvestment;
+      }
+    }
+    
     get formattedData() {
       return {
         name: this.name,

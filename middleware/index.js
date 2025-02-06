@@ -8,7 +8,6 @@ const isAdmin = function (req, res, next) {
   }
 };
 const isLoggedIn = function (req, res, next) {
-  console.log(req.session);
   if (!req.session.user) {
     const error = "Please Login First!";
     res.redirect(`/login?error=${error}`);
