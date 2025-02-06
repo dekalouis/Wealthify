@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Investment List</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      body {
+        background: linear-gradient(to right, #0072ff, #00c6ff);
+        color: white;
+      }
+      .investment-container {
+        background: white;
+        color: black;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <%- include('partials/nav') %>
+
+      <div class="text-center mb-4">
+        <h1 class="fw-bold">Investment List</h1>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <% investments.forEach((user) => { %>
+          <div class="investment-container mb-4">
+            <h3 class="fw-bold"><%= user.email %> (<%= user.role %>)</h3>
+            <p>Registered since: <%= formatDate(user.createdAt) %></p>
+
+            <% if (user.Companies.length > 0) { %>
+            <div class="container mt-4">
+              <h2>Investments:</h2>
+
+              <% user.Companies.forEach((company) => { %>
+              <div class="card mb-3 shadow-sm">
+                <div class="row g-0">
+                  <!-- LOGO -->
+                  <div
+                    class="col-md-2 d-flex justify-content-center align-items-center"
+                  >
+                    <img
+                      src="<%= company.companyLogo %>"
+                      alt="<%= company.name %> Logo"
+                      class="img-fluid rounded-start"
+                      style="max-height: 100px"
+                    />
+                  </div>
+
+                  <!-- INFONYA DULU -->
+                  <div class="col-md-7">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= company.Investment.name %></h5>
+                      <p class="card-text">
+                        <strong>Description:</strong> <%=
+                        company.Investment.description %>
+                      </p>
+                      <p class="card-text">
+                        <strong><%= company.name %></strong> - <%=
+                        company.location %><br />
+                        <span class="text-muted"
+                          ><i><%= company.description %></i></span
+                        >
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- DETAILL INVEST -->
+                  <div
+                    class="col-md-3 d-flex flex-column justify-content-center align-items-start p-3"
+                  >
+                    <p class="mb-2">
+                      <strong>Investment Amount:</strong> <%=
+                      formatRupiah(company.Investment.amount) %>
+                    </p>
+                    <p class="mb-4">
+                      <strong>Investment Type:</strong> <%=
+                      company.Investment.investmentType %>
+                    </p>
+                    <div class="d-flex gap-2">
+                      <a
+                        href="/investments/<%= company.Investment.id %>/edit"
+                        class="btn btn-warning btn-sm w-50"
+                        >Edit</a
+                      >
+                      <a
+                        href="/investments/<%= company.Investment.id %>/delete"
+                        class="btn btn-danger btn-sm w-50"
+                        >Delete</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+
+            <% } else { %>
+            <p class="text-light"><i>Belum memiliki investasi.</i></p>
+            <% } %>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
