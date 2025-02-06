@@ -9,7 +9,7 @@ const { Op } = require("sequelize");
 // const user = require("../models/user");
 const { formatRupiah } = require("../helpers/formatRupiah");
 const { formatDate } = require("../helpers/formatDate");
-const bcrypt = require("bcryptjs");
+const csv = require("csv-express");
 
 class Controller {
   static async landing(req, res) {
@@ -22,93 +22,15 @@ class Controller {
     }
   }
 
-  static async registerUser(req, res) {
-    try {
-      res.render("register");
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
-  static async addUser(req, res) {
-    const { email, password, role, fullName, phoneNumber, address } = req.body;
-    try {
-      const result = await User.create({ email, password, role });
-
-      await UserProfile.create({
-        fullName,
-        phoneNumber,
-        address,
-        UserId: result.id,
-      });
-      res.redirect("/");
-      // res.send(`berhasil registrer!`);
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
-  static async userLogin(req, res) {
-    const { error } = req.query;
-    try {
-      res.render("login", { error });
-      // res.send(`Login page!`);
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
-  static async loggedIn(req, res) {
-    const { email, password } = req.body;
-    try {
-      const user = await User.findOne({ where: { email } });
-      console.log(user, "<<<< user");
-
-      if (user) {
-        const isValid = bcrypt.compareSync(password, user.password);
-
-        if (isValid) {
-          req.session.userId = user.id;
-          req.session.role = user.role;
-
-          return res.redirect("/companies");
-        } else {
-          const error = "Invalid Email / Password";
-          return res.redirect(`login/?error=${error}`);
-        }
-      } else {
-        const error = "Invalid Email / Password";
-        return res.redirect(`login/?error=${error}`);
-      }
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  }
-
-  static async logOut(req, res) {
-    try {
-      await new Promise((resolve, reject) => {
-        req.session.destroy((err) => {
-          if (err) reject(err);
-          else resolve();
-        });
-      });
-
-      res.redirect("/");
-    } catch (error) {
-      console.log(error);
-      res.send(error);
-    }
-  }
-
   //!!! KERJAINNNNN============
   static async profilePage(req, res) {
     try {
+      // if (!req.session.user) {
+      //   const error = "Please log in to view your profile!";
+      //   return res.redirect(`/login?error=${error}`);
+      // }
       // res.send(`profile page!!`);
+      console.log(req.session.user);
       const { id } = req.params;
       const user = await User.findByPk(id, {
         include: { model: UserProfile },
@@ -125,13 +47,29 @@ class Controller {
   //! UDAH
   static async companiesPage(req, res) {
     try {
-      const { search, category } = req.query;
+      //!!CEK SI USER PUNYA INVESTMENT ITU GAAA
+      let userInvestments = [];
+      if (req.session.user) {
+        const userId = req.session.user.id;
+        userInvestments = await Investment.findAll({
+          where: { UserId: userId },
+          attributes: ["id", "CompanyId"],
+        });
+      }
+      const investmentMap = userInvestments.reduce((acc, inv) => {
+        acc[inv.CompanyId] = inv.id;
+        return acc;
+      }, {});
+      // console.log(userInvestments, `INI NIHH`, investedCompanyIds);
+      //UDAHHH
+
+      const { search, category, error } = req.query;
       let filter = {};
       let categoryFilter = {};
 
       if (search) {
         filter.name = {
-          [Op.iLike]: `%${search}%`, // Case-insensitive search
+          [Op.iLike]: `%${search}%`,
         };
       }
 
@@ -151,7 +89,15 @@ class Controller {
       const categories = await Category.findAll();
 
       // console.log(categories);
-      res.render("companiesPage", { companies, categories, search, category });
+      res.render("companiesPage", {
+        companies,
+        categories,
+        search,
+        category,
+        //TAMBAHIN YG DIPUNYAA
+        investmentMap,
+        error: error || null,
+      });
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -183,8 +129,9 @@ class Controller {
         include: [{ model: Category }],
       });
       const users = await User.findAll();
+      const sessionUser = req.session.user;
 
-      res.render("addInvestment", { company, users, id, errors });
+      res.render("addInvestment", { company, users, id, errors, sessionUser });
       // res.send(`buat nginvestnyaa!`);
       // console.log(users);
     } catch (err) {
@@ -197,7 +144,19 @@ class Controller {
   static async createInvestment(req, res) {
     const { id } = req.params;
     const { name, description, UserId, investmentType, amount } = req.body;
+    const sessionUser = req.session.user;
+
     try {
+      const finalUserId =
+        sessionUser.role === "admin" ? UserId : sessionUser.id;
+
+      // res.send(`BERHASIL DIINVEST!`);
+      // console.log(req.body);
+      const { id } = req.params;
+      const { name, description, UserId, investmentType, amount } = req.body;
+
+      // console.log(req.body);
+
       const newInvestment = await Investment.create({
         name,
         description,
@@ -223,7 +182,17 @@ class Controller {
 
   static async userInvestments(req, res) {
     try {
+      const { id, role } = req.session.user;
+
+      //!!!!!!!KONDISI BUAT ADMIN
+      let condition = {};
+      if (role !== "admin") {
+        condition = { id };
+      }
+      //! UDAH
+
       const investments = await User.findAll({
+        where: condition,
         include: {
           model: Company,
           through: {
@@ -248,6 +217,8 @@ class Controller {
   static async editInvestmentForm(req, res) {
     const { investmentId } = req.params;
     const { errors } = req.query;
+    const { id: loggedInUserId, role } = req.session.user;
+
     try {
       const companies = await Company.findAll();
       const investment = await Investment.findOne({
@@ -259,10 +230,23 @@ class Controller {
           "investmentType",
           "amount",
           "CompanyId",
+          "UserId",
         ],
       });
 
+      console.log(investment.UserId, `bandingin sama `, loggedInUserId);
+      // console.log(investment);
+      console.log(`YAAaaaaaaaAAAAA`);
+      console.log(investment.UserId, loggedInUserId);
+      //CHECK ROLEE SAMA USER
+      if (role !== "admin" && investment.UserId !== loggedInUserId) {
+        let error = `no access!`;
+        return res.redirect(`/companies?error=${error}`);
+      }
+      //
+
       res.render("editInvestment", { investment, companies, errors });
+      // res.send(companies);
       // res.send(`EDit investment yang udah ada!`);
     } catch (err) {
       console.log(err);
@@ -272,12 +256,48 @@ class Controller {
 
   static async updateInvestment(req, res) {
     const { investmentId } = req.params;
+    const { id: loggedInUserId, role } = req.session.user;
+
     const { name, description, investmentType, amount, CompanyId } = req.body;
     try {
-      await Investment.update(
-        { name, description, investmentType, amount, CompanyId },
-        { where: { id: investmentId } }
-      );
+      // const investment = await Investment.update(
+      //   { name, description, investmentType, amount, CompanyId },
+      //   { where: { id: investmentId } }
+      // );
+
+      // // CHECK ROLEE SAMA USER
+      // if (role !== "admin" && investment.UserId !== loggedInUserId) {
+      //   let error = `no access!`;
+      //   return res.redirect(`/companies?error=${error}`);
+      // }
+      // //
+
+      // // res.send(`UPDATE BERHASIL!`);
+      // res.redirect("/investments");
+
+      const investment = await Investment.findOne({
+        where: { id: investmentId },
+      });
+
+      if (!investment) {
+        let error = `Investment not found!`;
+        return res.redirect(`/companies?error=${error}`);
+      }
+
+      // CHECK ROLEE SAMA USER
+      if (role !== "admin" && investment.UserId !== loggedInUserId) {
+        let error = `no access!`;
+        return res.redirect(`/companies?error=${error}`);
+      }
+
+      // If the user has access, update the investment
+      await investment.update({
+        name,
+        description,
+        investmentType,
+        amount,
+        CompanyId,
+      });
 
       res.redirect("/investments");
       // res.send(`UPDATE BERHASIL!`);
@@ -296,13 +316,43 @@ class Controller {
 
   static async deleteInvestment(req, res) {
     const { investmentId } = req.params;
+    const { id: loggedInUserId, role } = req.session.user;
+
     try {
+      const investment = await Investment.findOne({
+        where: { id: investmentId },
+      });
+
+      // CHECK ROLEE SAMA USER
+      if (role !== "admin" && investment.UserId !== loggedInUserId) {
+        let error = `no access!`;
+        return res.redirect(`/companies?error=${error}`);
+      }
+      //
       await Investment.destroy({ where: { id: investmentId } });
 
       res.redirect("/investments");
     } catch (err) {
       console.log(err);
       res.send(err);
+    }
+  }
+
+  //! DOWNLOAD CSV
+  static async downloadInvestments(req, res) {
+    try {
+      const { id } = req.session.user;
+      const investments = await Investment.findAll({
+        where: { UserId: id },
+        include: [{ model: Company }],
+      });
+
+      const csvData = investments.map((investment) => investment.formattedData);
+
+      res.csv(csvData, true);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error generating CSV file.");
     }
   }
 }

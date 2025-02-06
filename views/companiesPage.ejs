@@ -44,6 +44,14 @@
         </p>
       </div>
 
+      <% if (error) { %>
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          <strong>Error:</strong> <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+      
+
       <div class="mb-4">
        <form action="/companies" method="GET" class="mb-3">
          <div class="input-group">
@@ -101,11 +109,16 @@
                   <a href="/companies/<%= company.id %>" class="btn btn-sm btn-outline-secondary">See Details</a>
                   <div class="d-flex justify-content-center gap-2">
                     <a href="/companies/<%= company.id %>/invest" class="btn btn-sm btn-success w-100 text-center">Buy</a>
-                    <a href="/investments/<%= company.id %>/edit" class="btn btn-sm btn-warning w-100 text-center">Adjust</a>
-                    <a href="/investments/<%= company.id %>/delete" class="btn btn-sm btn-danger w-100 text-center">Sell</a>
+              
+                    <% if (investmentMap[company.id]) { %> 
+                      <a href="/investments/<%= investmentMap[company.id] %>/edit" class="btn btn-sm btn-warning w-100 text-center">Adjust</a>
+                      <a href="/investments/<%= investmentMap[company.id] %>/delete" class="btn btn-sm btn-danger w-100 text-center">Sell</a>
+                    <% } %>
+              
                   </div>
                 </div>
               </td>
+              
               
             </tr>
             <% }) %>

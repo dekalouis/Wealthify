@@ -20,6 +20,14 @@
         display: flex;
         align-items: center;
       }
+      .error-banner {
+        background-color: rgba(255, 223, 223, 0.8);
+        border: 1px solid rgb(142, 3, 3);
+        color: rgb(142, 3, 3);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 5px;
+      }
     </style>
   </head>
   <body>
@@ -31,7 +39,7 @@
             <p class="lead">Masuk untuk mulai tracking investasimu.</p>
 
             <% if (error) { %>
-              <p style="color: red;"><%= error %></p>
+            <div class="error-banner"><strong>Error:</strong> <%= error %></div>
             <% } %>
 
             <form action="/login" method="POST" class="mt-4">
