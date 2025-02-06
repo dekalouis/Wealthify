@@ -5,7 +5,7 @@ const {
   User,
   UserProfile,
 } = require("../models");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 // const user = require("../models/user");
 const { formatRupiah } = require("../helpers/formatRupiah");
 const { formatDate } = require("../helpers/formatDate");
@@ -148,8 +148,14 @@ class Controller {
     const sessionUser = req.session.user;
 
     try {
-      const finalUserId =
-        sessionUser.role === "admin" ? UserId : sessionUser.id;
+      // const finalUserId =
+      //   sessionUser.role === "admin" ? UserId : sessionUser.id;
+      let finalUserId;
+      if (sessionUser.role === "admin" && req.body.UserId) {
+        finalUserId = req.body.UserId; // Admin selects the user
+      } else {
+        finalUserId = sessionUser.id; // Regular user
+      }
 
       // res.send(`BERHASIL DIINVEST!`);
       // console.log(req.body);
@@ -163,12 +169,12 @@ class Controller {
         description,
         investmentType,
         amount,
-        UserId,
+        UserId: finalUserId,
         CompanyId: id,
       });
       // res.send(`BERHASIL DIINVEST!`);
       // console.log(req.body);
-      // res.send(newInvestment);
+      // console.log(newInvestment);
       res.redirect("/companies");
     } catch (error) {
       if (error.name === "SequelizeValidationError") {
@@ -248,8 +254,8 @@ class Controller {
 
       console.log(investment.UserId, `bandingin sama `, loggedInUserId);
       // console.log(investment);
-      console.log(`YAAaaaaaaaAAAAA`);
-      console.log(investment.UserId, loggedInUserId);
+      // console.log(`YAAaaaaaaaAAAAA`);
+      // console.log(investment.UserId, `---`,loggedInUserId);
       //CHECK ROLEE SAMA USER
       if (role !== "admin" && investment.UserId !== loggedInUserId) {
         let error = `no access!`;

@@ -1,21 +1,21 @@
 [{
     "id": 1,
     "email": "joko@mail.com",
-    "password": "testpassword",
+    "password": "$2b$10$xypcNY630ntS.f0WIj7bCea6NjkylcLq43rWQSgTXNljRv6drUVb2",
     "role": "admin"
 },{
     "id": 2,
     "email": "abdul@mail.com",
-    "password": "testpassword",
-    "role": "admin"
+    "password": "$2b$10$xypcNY630ntS.f0WIj7bCea6NjkylcLq43rWQSgTXNljRv6drUVb2",
+    "role": "user"
 },{
     "id": 3,
     "email": "ilham@mail.com",
-    "password": "testpassword",
+    "password": "$2b$10$xypcNY630ntS.f0WIj7bCea6NjkylcLq43rWQSgTXNljRv6drUVb2",
     "role": "admin"
 },{
     "id": 4,
     "email": "ucup@mail.com",
-    "password": "testpassword",
+    "password": "$2b$10$xypcNY630ntS.f0WIj7bCea6NjkylcLq43rWQSgTXNljRv6drUVb2",
     "role": "user"
 }]
