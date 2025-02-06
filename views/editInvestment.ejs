@@ -37,6 +37,9 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="form-container">
+                    <% if (errors) { errors.split(',').forEach((error) => { %>
+                        <p style="color: red"><%= error %></p>
+                    <% }); } %>
                     <form action="/investments/<%= investment.id %>/edit" method="POST">
                         
                         <!-- Select Company -->

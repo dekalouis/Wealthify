@@ -1,6 +1,7 @@
 "use strict";
 
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Investment extends Model {
     /**
@@ -16,13 +17,50 @@ module.exports = (sequelize, DataTypes) => {
   }
   Investment.init(
     {
-      name: DataTypes.STRING,
-      description: DataTypes.TEXT,
-
-      investmentType: DataTypes.STRING,
-      amount: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Investment name cannot be empty" },
+          len: {
+            args: [3, 255],
+            msg: "Investment name must be between 3 and 255 characters",
+          },
+        },
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Description cannot be empty" },
+        },
+      },
+      investmentType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Investment type is required" },
+        },
+      },
+      amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Investment amount is required" },
+          min: {
+            args: [10000],
+            msg: "Investment amount must be at least Rp 10.000",
+          },
+        },
+      },
       UserId: DataTypes.INTEGER,
-      CompanyId: DataTypes.INTEGER,
+      CompanyId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Company is required" },
+        },
+      },
     },
     {
       sequelize,

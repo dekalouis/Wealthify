@@ -97,7 +97,7 @@ class Controller {
           else resolve();
         });
       });
-  
+
       res.redirect("/");
     } catch (error) {
       console.log(error);
@@ -173,31 +173,31 @@ class Controller {
       res.send(err);
     }
   }
+
   //! UDAH
   static async showInvestmentForm(req, res) {
+    const { id } = req.params;
+    const { errors } = req.query;
     try {
-      // res.send(`buat nginvestnyaa!`);
-      const { id } = req.params;
       const company = await Company.findByPk(id, {
         include: [{ model: Category }],
       });
       const users = await User.findAll();
-      // console.log(users);
 
-      res.render("addInvestment", { company, users, id });
+      res.render("addInvestment", { company, users, id, errors });
+      // res.send(`buat nginvestnyaa!`);
+      // console.log(users);
     } catch (err) {
       console.log(err);
       res.send(err);
     }
   }
+
   //! UDAH
   static async createInvestment(req, res) {
+    const { id } = req.params;
+    const { name, description, UserId, investmentType, amount } = req.body;
     try {
-      // res.send(`BERHASIL DIINVEST!`);
-      // console.log(req.body);
-      const { id } = req.params;
-      const { name, description, UserId, investmentType, amount } = req.body;
-
       const newInvestment = await Investment.create({
         name,
         description,
@@ -206,12 +206,18 @@ class Controller {
         UserId,
         CompanyId: id,
       });
-
+      // res.send(`BERHASIL DIINVEST!`);
+      // console.log(req.body);
       // res.send(newInvestment);
       res.redirect("/companies");
-    } catch (err) {
-      console.log(err);
-      res.send(err);
+    } catch (error) {
+      if (error.name === "SequelizeValidationError") {
+        const errors = error.errors.map((err) => err.message);
+        res.redirect(`/companies/${id}/invest?errors=` + errors.join(","));
+      } else {
+        res.send(error);
+        console.log(error.message);
+      }
     }
   }
 
@@ -227,21 +233,11 @@ class Controller {
               "description",
               "investmentType",
               "amount",
-            ], // Specify fields to include from the junction table https://sequelize.org/docs/v6/core-concepts/assocs/#foobelongstomanybar--through-baz-
+            ],
           },
         },
       });
 
-      // const investments = await Investment.findAll({
-      //   include: {
-      //     model: User,
-      //     include: {
-      //       model: Company
-      //     }
-      //   }
-      // })
-
-      // res.send(investments);
       res.render("investments", { investments, formatRupiah, formatDate });
     } catch (err) {
       console.log(err);
@@ -251,6 +247,7 @@ class Controller {
 
   static async editInvestmentForm(req, res) {
     const { investmentId } = req.params;
+    const { errors } = req.query;
     try {
       const companies = await Company.findAll();
       const investment = await Investment.findOne({
@@ -265,8 +262,7 @@ class Controller {
         ],
       });
 
-      res.render("editInvestment", { investment, companies });
-      // res.send(companies);
+      res.render("editInvestment", { investment, companies, errors });
       // res.send(`EDit investment yang udah ada!`);
     } catch (err) {
       console.log(err);
@@ -283,11 +279,18 @@ class Controller {
         { where: { id: investmentId } }
       );
 
-      // res.send(`UPDATE BERHASIL!`);
       res.redirect("/investments");
-    } catch (err) {
-      console.log(err);
-      res.send(err);
+      // res.send(`UPDATE BERHASIL!`);
+    } catch (error) {
+      if (error.name === "SequelizeValidationError") {
+        const errors = error.errors.map((err) => err.message);
+        res.redirect(
+          `/investments/${investmentId}/edit?errors=` + errors.join(",")
+        );
+      } else {
+        res.send(error);
+        console.log(error.message);
+      }
     }
   }
 
