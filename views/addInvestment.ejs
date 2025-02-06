@@ -49,6 +49,10 @@
               method="POST"
               class="mt-4"
             >
+              <% if (errors) { errors.split(',').forEach((error) => { %>
+              <p style="color: red"><%= error %></p>
+              <% }); } %>
+
               <div class="mb-3">
                 <label for="name" class="form-label">Investment Name</label>
                 <input
