@@ -101,6 +101,15 @@ class Controller {
         },
       });
 
+      // const investments = await Investment.findAll({
+      //   include: {
+      //     model: User,
+      //     include: {
+      //       model: Company
+      //     }
+      //   }
+      // })
+
       // res.send(investments);
       res.render("investments", { investments });
     } catch (err) {
@@ -112,8 +121,11 @@ class Controller {
   static async editInvestmentForm(req, res) {
     const { investmentId } = req.params;
     try {
-      const investment = await Investment.findByPk(investmentId);
       const companies = await Company.findAll();
+      const investment = await Investment.findOne({
+        where: { id: investmentId },
+        attributes: ["id", "name", "description","investmentType", "amount", "CompanyId"],
+      });
 
       res.render("investments-Edit", { investment, companies });
       // res.send(companies);
@@ -146,7 +158,7 @@ class Controller {
     try {
       await Investment.destroy({ where: { id: investmentId } });
 
-      res.redirect("/investment")
+      res.redirect("/investment");
     } catch (err) {
       console.log(err);
       res.send(err);
