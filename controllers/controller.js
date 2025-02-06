@@ -9,6 +9,7 @@ const { Op } = require("sequelize");
 const user = require("../models/user");
 const { formatRupiah } = require("../helpers/formatRupiah");
 const { formatDate } = require("../helpers/formatDate");
+const csv = require("csv-express");
 
 class Controller {
   static async landing(req, res) {
@@ -184,20 +185,18 @@ class Controller {
               "description",
               "investmentType",
               "amount",
-            ], // Specify fields to include from the junction table https://sequelize.org/docs/v6/core-concepts/assocs/#foobelongstomanybar--through-baz-
+            ],
           },
         },
       });
-      // const investments = await Investment.findAll({
-      //   include: {
-      //     model: User,
-      //     include: {
-      //       model: Company
-      //     }
-      //   }
-      // })
-      // res.send(investments);
-      res.render("investments", { investments, formatRupiah, formatDate });
+
+      //? BUAT TAMBAHIN CHART==================================
+
+      res.render("investments", {
+        investments,
+        formatRupiah,
+        formatDate,
+      });
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -288,6 +287,24 @@ class Controller {
     } catch (err) {
       console.log(err);
       res.send(err);
+    }
+  }
+
+  //! DOWNLOAD CSV
+  static async downloadInvestments(req, res) {
+    try {
+      const { id } = req.session.user;
+      const investments = await Investment.findAll({
+        where: { UserId: id },
+        include: [{ model: Company }],
+      });
+
+      const csvData = investments.map((investment) => investment.formattedData);
+
+      res.csv(csvData, true);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error generating CSV file.");
     }
   }
 }

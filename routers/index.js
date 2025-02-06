@@ -65,8 +65,6 @@ router.get("/investments/:investmentId/edit", Controller.editInvestmentForm);
 router.post("/investments/:investmentId/edit", Controller.updateInvestment);
 router.get("/investments/:investmentId/delete", Controller.deleteInvestment);
 
-// router.get("/admin/investments", isAdmin, Controller.adminDashboard);
-// router.get("/admin/users", isAdmin, Controller.adminUsers);
-// router.get("/admin/companies", isAdmin, Controller.adminCompanies);
+router.get("/investments/download", Controller.downloadInvestments);
 
 module.exports = router;
