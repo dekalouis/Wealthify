@@ -15,21 +15,17 @@ class UserController {
 
   static async registerForm(req, res) {
     try {
-      // res.send(`RegisterPage!`);
-      res.render("auth-pages/register");
+      const { errors } = req.query;
+      res.render("auth-pages/register", { errors: errors || null });
     } catch (err) {
       console.log(err);
       res.send(err);
     }
   }
-
   static async postRegister(req, res) {
     try {
-      //   res.send(`berhasil registrer!`);
       const { email, password, role, fullName, phoneNumber, address } =
         req.body;
-
-      //   console.log(req.body);
 
       const newUser = await User.create({
         email,
@@ -37,17 +33,22 @@ class UserController {
         role,
       });
 
-      const userProfile = await UserProfile.create({
+      await UserProfile.create({
         fullName,
         phoneNumber,
         address,
         UserId: newUser.id,
       });
-      console.log(userProfile);
+
       res.redirect("/login");
     } catch (err) {
-      console.log(err);
-      res.send(err);
+      if (err.name === "SequelizeValidationError") {
+        const errors = err.errors.map((e) => e.message);
+        return res.redirect(`/register?errors=${errors.join(",")}`);
+      } else {
+        console.log(err);
+        res.send(err);
+      }
     }
   }
 

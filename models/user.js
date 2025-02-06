@@ -19,22 +19,52 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      role: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: { msg: "Invalid email " },
+          notNull: { msg: "Email tidak boleh kosong" },
+          notEmpty: { msg: "Email tidak boleh kosong" },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: {
+            args: [6, 100],
+            msg: "Password harus 6 karakter",
+          },
+          notNull: { msg: "Password tidak boleh kosong" },
+          notEmpty: { msg: "Password tidak boleh kosong" },
+        },
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isIn: {
+            args: [["admin", "user"]],
+            msg: "Role harus 'admin' or 'user'",
+          },
+          notNull: { msg: "Role tidak boleh kosong" },
+          notEmpty: { msg: "Role tidak boleh kosong" },
+        },
+      },
     },
     {
       hooks: {
-        beforeCreate(instance, options) {
+        beforeCreate(instance) {
           const salt = bcrypt.genSaltSync(10);
-          const hash = bcrypt.hashSync(instance.password, salt);
-
-          instance.password = hash;
+          instance.password = bcrypt.hashSync(instance.password, salt);
         },
       },
       sequelize,
       modelName: "User",
     }
   );
+
   return User;
 };

@@ -32,6 +32,14 @@
               Mulai tracking investasimu sekarang dengan Wealthify.
             </p>
 
+            <% if (errors) { %>
+              <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                <strong>Error:</strong> <%= errors %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <% } %>
+            
+
             <form action="/register" method="POST" class="mt-4">
               <!-- Email -->
               <div class="mb-3">

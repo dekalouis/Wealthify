@@ -18,14 +18,41 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      fullName: DataTypes.STRING,
-      phoneNumber: DataTypes.STRING,
-      address: DataTypes.STRING,
+      fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Nama lengkap tidak boleh kosong" },
+          notEmpty: { msg: "Nama lengkap tidak boleh kosong" },
+        },
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Phone Number tidak boleh kosong" },
+          notEmpty: { msg: "Phone Number tidak boleh kosong" },
+          isNumeric: { msg: "Phone Number hanya boleh angka" },
+          len: {
+            args: [10, 15],
+            msg: "Phone Number harus 10 - 15 karakter",
+          },
+        },
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Alamat tidak boleh kosong" },
+          notEmpty: { msg: "Alamat tidak boleh kosong" },
+        },
+      },
     },
     {
       sequelize,
       modelName: "UserProfile",
     }
   );
+
   return UserProfile;
 };
