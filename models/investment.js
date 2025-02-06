@@ -26,6 +26,17 @@ module.exports = (sequelize, DataTypes) => {
         return totalInvestment;
       }
     }
+    
+    get formattedData() {
+      return {
+        name: this.name,
+        description: this.description,
+        type: this.investmentType,
+        amount: this.amount,
+        companyName: this.Company?.name || "N/A",
+        companyLocation: this.Company?.location || "N/A",
+      };
+    }
   }
   Investment.init(
     {

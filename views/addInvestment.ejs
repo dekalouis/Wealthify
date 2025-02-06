@@ -75,7 +75,8 @@
                 ></textarea>
               </div>
 
-              <!-- user -->
+              <!-- Userselect buat aadmin -->
+              <% if (sessionUser && sessionUser.role === "admin") { %>
               <div class="mb-3">
                 <label for="UserId" class="form-label">User</label>
                 <select id="UserId" name="UserId" class="form-select">
@@ -84,6 +85,14 @@
                   <% }) %>
                 </select>
               </div>
+              <% } else { %>
+              <!-- Hidden input for normal users -->
+              <input
+                type="hidden"
+                name="UserId"
+                value="<%= sessionUser.id %>"
+              />
+              <% } %>
 
               <!-- investmenttype -->
               <div class="mb-3">

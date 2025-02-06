@@ -28,7 +28,6 @@
         margin-bottom: 20px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
       }
-
       .btn {
         height: 40px;
         display: flex;
@@ -61,9 +60,7 @@
               <div class="card mb-3 shadow-sm">
                 <div class="row g-0">
                   <!-- LOGO -->
-                  <div
-                    class="col-md-2 d-flex justify-content-center align-items-center"
-                  >
+                  <div class="col-md-2 d-flex justify-content-center align-items-center">
                     <img
                       src="<%= company.companyLogo %>"
                       alt="<%= company.name %> Logo"
@@ -77,42 +74,30 @@
                     <div class="card-body">
                       <h5 class="card-title"><%= company.Investment.name %></h5>
                       <p class="card-text">
-                        <strong>Description:</strong> <%=
-                        company.Investment.description %>
+                        <strong>Description:</strong> <%= company.Investment.description %>
                       </p>
                       <p class="card-text">
-                        <strong><%= company.name %></strong> - <%=
-                        company.location %><br />
-                        <span class="text-muted"
-                          ><i><%= company.description %></i></span
-                        >
+                        <strong><%= company.name %></strong> - <%= company.location %><br />
+                        <span class="text-muted"><i><%= company.description %></i></span>
                       </p>
                     </div>
                   </div>
 
-                  <!-- DETAILL INVEST -->
-                  <div
-                    class="col-md-3 d-flex flex-column justify-content-center align-items-start p-3"
-                  >
+                  <!-- DETAIL INVEST -->
+                  <div class="col-md-3 d-flex flex-column justify-content-center align-items-start p-3">
                     <p class="mb-2">
-                      <strong>Investment Amount:</strong> <%=
-                      formatRupiah(company.Investment.amount) %>
+                      <strong>Investment Amount:</strong> <%= formatRupiah(company.Investment.amount) %>
                     </p>
                     <p class="mb-4">
-                      <strong>Investment Type:</strong> <%=
-                      company.Investment.investmentType %>
+                      <strong>Investment Type:</strong> <%= company.Investment.investmentType %>
                     </p>
                     <div class="d-flex gap-2">
-                      <a
-                        href="/investments/<%= company.Investment.id %>/edit"
-                        class="btn btn-warning btn-sm w-50"
-                        >Edit</a
-                      >
-                      <a
-                        href="/investments/<%= company.Investment.id %>/delete"
-                        class="btn btn-danger btn-sm w-50"
-                        >Delete</a
-                      >
+                      <a href="/investments/<%= company.Investment.id %>/edit" class="btn btn-warning btn-sm w-50">
+                        Edit
+                      </a>
+                      <a href="/investments/<%= company.Investment.id %>/delete" class="btn btn-danger btn-sm w-50">
+                        Delete
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -122,14 +107,19 @@
               <!-- MENAMPILKAN TOTAL INVESTMENT PER USER -->
               <div class="mt-3 p-3 bg-light text-dark rounded">
                 <h5 class="fw-bold">
-                  Total Investment: <%= formatRupiah(totalInvestments[user.id])
-                  %>
+                  Total Investment: <%= formatRupiah(totalInvestments[user.id]) %>
                 </h5>
               </div>
-              
+
+              <!-- DOWNLOAD LAPORAN CSV -->
+              <div class="text-end mt-3">
+                <a href="/investments/download" class="btn btn-primary">
+                  Download Laporan CSV
+                </a>
+              </div>
             </div>
             <% } else { %>
-            <p class="text-light"><i>Belum memiliki investasi.</i></p>
+            <p class="text-muted"><i>Belum memiliki investasi.</i></p>
             <% } %>
           </div>
           <% }) %>
