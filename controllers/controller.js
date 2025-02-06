@@ -7,6 +7,8 @@ const {
 } = require("../models");
 const { Op } = require("sequelize");
 const user = require("../models/user");
+const { formatRupiah } = require("../helpers/formatRupiah");
+const { formatDate } = require("../helpers/formatDate");
 
 class Controller {
   static async landing(req, res) {
@@ -74,22 +76,6 @@ class Controller {
   }
 
   //! UDAH
-  // static async companiesPage(req, res) {
-  //   try {
-  //     //   res.send(`daftar company!`);
-
-  //     const companies = await Company.findAll({
-  //       include: Category,
-  //       order: [["name", "ASC"]],
-  //     });
-  //     //   console.log(companies[0].name, `---`, companies[0].companyLogo);
-  //     // res.send(companies);
-  //     res.render("companiesPage", { companies });
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.send(err);
-  //   }
-  // }
   static async companiesPage(req, res) {
     try {
       const { search, category } = req.query;
@@ -149,7 +135,7 @@ class Controller {
         include: [{ model: Category }],
       });
       const users = await User.findAll();
-      console.log(users);
+      // console.log(users);
 
       res.render("addInvestment", { company, users, id });
     } catch (err) {
@@ -162,17 +148,16 @@ class Controller {
     try {
       // res.send(`BERHASIL DIINVEST!`);
       // console.log(req.body);
-      const { CompanyId, name, description, UserId, InvestmentType, amount } =
-        req.body;
+      const { id } = req.params;
+      const { name, description, UserId, investmentType, amount } = req.body;
 
-      console.log(req.body);
       const newInvestment = await Investment.create({
         name,
         description,
-        InvestmentType,
+        investmentType,
         amount,
         UserId,
-        CompanyId,
+        CompanyId: id,
       });
 
       // res.send(newInvestment);
@@ -189,7 +174,13 @@ class Controller {
         include: {
           model: Company,
           through: {
-            attributes: ["id", "name", "investmentType", "amount"], // Specify fields to include from the junction table https://sequelize.org/docs/v6/core-concepts/assocs/#foobelongstomanybar--through-baz-
+            attributes: [
+              "id",
+              "name",
+              "description",
+              "investmentType",
+              "amount",
+            ], // Specify fields to include from the junction table https://sequelize.org/docs/v6/core-concepts/assocs/#foobelongstomanybar--through-baz-
           },
         },
       });
@@ -204,7 +195,7 @@ class Controller {
       // })
 
       // res.send(investments);
-      res.render("investments", { investments });
+      res.render("investments", { investments, formatRupiah, formatDate });
     } catch (err) {
       console.log(err);
       res.send(err);
@@ -217,10 +208,17 @@ class Controller {
       const companies = await Company.findAll();
       const investment = await Investment.findOne({
         where: { id: investmentId },
-        attributes: ["id", "name", "description","investmentType", "amount", "CompanyId"],
+        attributes: [
+          "id",
+          "name",
+          "description",
+          "investmentType",
+          "amount",
+          "CompanyId",
+        ],
       });
 
-      res.render("investments-Edit", { investment, companies });
+      res.render("editInvestment", { investment, companies });
       // res.send(companies);
       // res.send(`EDit investment yang udah ada!`);
     } catch (err) {
@@ -251,7 +249,7 @@ class Controller {
     try {
       await Investment.destroy({ where: { id: investmentId } });
 
-      res.redirect("/investment");
+      res.redirect("/investments");
     } catch (err) {
       console.log(err);
       res.send(err);
