@@ -10,57 +10,108 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-  </head>
-  <body class="container">
-    <%- include('partials/nav') %>
-    <h1>Companies</h1>
-    <h3>Pilih saham perusahaan yang mau kamu cek lebih lanjut/beli</h3>
-    <table class="table table-bordered">
-      <thead class="table-light">
-        <tr>
-          <th>Logo</th>
-          <th>Company Name</th>
-          <th>Location</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Action</th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <% companies.forEach((company, i) => {%>
-        <tr>
-          <td>
-            <img
-              src="<%= company.companyLogo %>"
-              alt=""
-              style="max-width: 50px"
-            />
-          </td>
-          <td><%= company.name%></td>
-          <td><%= company.location%></td>
-          <td><%= company.description%></td>
-          <td><%= company.Category.title%></td>
-          <td class="d-flex gap-2">
-            <a
-              href="/companies/<%=company.id%>/invest"
-              class="btn btn-sm btn-success"
-              >Buy</a
-            >
-            <a
-              href="/investments/<%=company.id%>/edit"
-              class="btn btn-sm btn-warning"
-              >Adjust</a
-            >
-            <a
-              href="/investments/<%=company.id%>/delete"
-              class="btn btn-sm btn-danger"
-              >Sell</a
-            >
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
+    <style>
+      body {
+        background: linear-gradient(to right, #0072ff, #00c6ff);
+        color: white;
+      }
+      .companies-section {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .table-container {
+        background: white;
+        color: black;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .img-fluid {
+        max-height: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container companies-section">
+      <%- include('partials/nav') %>
+
+      <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Daftar Perusahaan</h1>
+        <p class="lead">
+          Pilih saham perusahaan yang mau kamu cek lebih lanjut atau beli.
+        </p>
+      </div>
+
+      <div class="mb-4">
+       <form action="/companies" method="GET" class="mb-3">
+         <div class="input-group">
+     
+           <input
+             type="text"
+             name="search"
+             class="form-control"
+             placeholder="Search by Company Name"
+             value="<%= search || '' %>"
+           />
+       
+     
+           <select name="category" class="form-select">
+             <option value="">All Categories</option>
+             <% categories.forEach(cat => { %>
+               <option value="<%= cat.id %>" <%= category == cat.id ? 'selected' : '' %>>
+                 <%= cat.title %>
+               </option>
+             <% }) %>
+           </select>
+       
+     
+           <button type="submit" class="btn btn-primary">Search</button>
+         </div>
+       </form>
+      </div>
+
+
+      <div class="table-container">
+        <table class="table  text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th style="width: 25%;">Logo</th>
+              <th style="width: 25%;">Company Name</th>
+              <th style="width: 25%;">Category</th>
+              <th style="width: 25%;">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% companies.forEach((company, i) => { %>
+            <tr>
+              <td>
+                <img
+                  src="<%= company.companyLogo %>"
+                  alt="<%= company.name %> Logo"
+                  class="img-fluid"
+                />
+              </td>
+              <td><%= company.name %></td>
+              <td><%= company.Category.title %></td>
+              <td class="text-center">
+                <div class="d-grid justify-content gap-2">
+                  <a href="/companies/<%= company.id %>" class="btn btn-sm btn-outline-secondary">See Details</a>
+                  <div class="d-flex justify-content-center gap-2">
+                    <a href="/companies/<%= company.id %>/invest" class="btn btn-sm btn-success w-100 text-center">Buy</a>
+                    <a href="/investments/<%= company.id %>/edit" class="btn btn-sm btn-warning w-100 text-center">Adjust</a>
+                    <a href="/investments/<%= company.id %>/delete" class="btn btn-sm btn-danger w-100 text-center">Sell</a>
+                  </div>
+                </div>
+              </td>
+              
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>

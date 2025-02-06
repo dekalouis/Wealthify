@@ -12,8 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Company.belongsTo(models.Category);
       Company.belongsToMany(models.User, {
+
         through: sequelize.models.Investment,
       })
+
     }
   }
   Company.init(

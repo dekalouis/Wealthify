@@ -38,7 +38,7 @@
     {
         "id": 5,
         "name": "Servis AC",
-        "companyLogo": "https://img.logoipsum.com/242.png",
+        "companyLogo": "https://img.logoipsum.com/241.png",
         "location": "Ujung Kulon",
         "email": "hello@servisbos.com",
         "description": "AC Anda kurang dingin? Rumah Anda Panas? Ke luar negeri solusinya",
@@ -69,6 +69,15 @@
         "location": "Global",
         "email": "hello@pbayarbos.com",
         "description": "Kenapa Anda butuh kami? Karena Anda bayar!",
+        "CategoryId": 1
+    },
+    {
+        "id": 9,
+        "name": "SDN Hawrimaw Berhad",
+        "companyLogo": "https://img.logoipsum.com/346.png",
+        "location": "Petailing Jaya/Cyberjaya",
+        "email": "hello@haweemaw.com",
+        "description": "Tak pernah ucap hello pergi kau melambai! Hawreemaw! Hawreemaw! Harimau Malaya!",
         "CategoryId": 1
     }
 ]
