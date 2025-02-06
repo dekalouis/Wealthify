@@ -73,17 +73,51 @@ class Controller {
   }
 
   //! UDAH
+  // static async companiesPage(req, res) {
+  //   try {
+  //     //   res.send(`daftar company!`);
+
+  //     const companies = await Company.findAll({
+  //       include: Category,
+  //       order: [["name", "ASC"]],
+  //     });
+  //     //   console.log(companies[0].name, `---`, companies[0].companyLogo);
+  //     // res.send(companies);
+  //     res.render("companiesPage", { companies });
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.send(err);
+  //   }
+  // }
   static async companiesPage(req, res) {
     try {
-      //   res.send(`daftar company!`);
+      const { search, category } = req.query;
+      let filter = {};
+      let categoryFilter = {};
+
+      if (search) {
+        filter.name = {
+          [Op.iLike]: `%${search}%`, // Case-insensitive search
+        };
+      }
+
+      if (category) {
+        categoryFilter.id = category;
+      }
 
       const companies = await Company.findAll({
-        include: Category,
+        where: filter,
+        include: {
+          model: Category,
+          where: categoryFilter,
+        },
         order: [["name", "ASC"]],
       });
-      //   console.log(companies[0].name, `---`, companies[0].companyLogo);
-      // res.send(companies);
-      res.render("companiesPage", { companies });
+
+      const categories = await Category.findAll();
+
+      // console.log(categories);
+      res.render("companiesPage", { companies, categories, search, category });
     } catch (err) {
       console.log(err);
       res.send(err);
