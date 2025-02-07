@@ -4,7 +4,7 @@
     "description": "karena kurang dana, joko invest singa reog 15rb",
     "CompanyId": 1,
     "UserId": 1,
-    "investmentType": "low risk",
+    "investmentType": "Low Risk",
     "amount": 15000
   },
   {
@@ -12,7 +12,7 @@
     "description": "baru gajian nih, jadi Joko invest 30rb di kucing tidur",
     "CompanyId": 3,
     "UserId": 1,
-    "investmentType": "low risk",
+    "investmentType": "Low Risk",
     "amount": 30000
   },
   {
@@ -20,7 +20,7 @@
     "description": "ucup gasuka saham, judi katanya, tapi diam2 invest kucingtidur",
     "CompanyId": 3,
     "UserId": 4,
-    "investmentType": "high risk",
+    "investmentType": "High Risk",
     "amount": 20000
   },
   {
@@ -28,7 +28,7 @@
     "description": "ilham fotoin kantor dulu ya",
     "CompanyId": 2,
     "UserId": 2,
-    "investmentType": "high risk",
+    "investmentType": "High Risk",
     "amount": 40000
   }
 ]

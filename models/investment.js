@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         return totalInvestment;
       }
     }
-    
+
     get formattedData() {
       return {
         name: this.name,
@@ -44,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Investment name cannot be empty" },
+          notEmpty: { msg: "Investment tidak boleh kosong" },
           len: {
             args: [3, 255],
-            msg: "Investment name must be between 3 and 255 characters",
+            msg: "Investment harus berisi 3-255 karakter",
           },
         },
       },
@@ -55,24 +55,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Description cannot be empty" },
+          notEmpty: { msg: "Description tidak boleh kosong" },
         },
       },
       investmentType: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Investment type is required" },
+          notEmpty: { msg: "Investment tidak boleh kosong" },
         },
       },
       amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Investment amount is required" },
+          notEmpty: { msg: "Investment tidak boleh kosong" },
           min: {
             args: [10000],
-            msg: "Investment amount must be at least Rp 10.000",
+            msg: "Investment haurs minimal Rp 10.000",
           },
         },
       },
@@ -81,13 +81,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Company is required" },
+          notEmpty: { msg: "Company harus dipilih" },
         },
       },
     },
     {
       sequelize,
       modelName: "Investment",
+      hooks: {
+        beforeSave: (investment) => {
+          investment.investmentType =
+            investment.investmentType.charAt(0).toUpperCase() +
+            investment.investmentType.slice(1).toLowerCase();
+        },
+      },
     }
   );
   return Investment;
