@@ -26,7 +26,7 @@ class Controller {
   static async profilePage(req, res) {
     try {
       // if (!req.session.user) {
-      //   const error = "Please log in to view your profile!";
+      //   const error = "Please log!";
       //   return res.redirect(`/login?error=${error}`);
       // }
       // res.send(`profile page!!`);
@@ -152,9 +152,9 @@ class Controller {
       //   sessionUser.role === "admin" ? UserId : sessionUser.id;
       let finalUserId;
       if (sessionUser.role === "admin" && req.body.UserId) {
-        finalUserId = req.body.UserId; // Admin selects the user
+        finalUserId = req.body.UserId;
       } else {
-        finalUserId = sessionUser.id; // Regular user
+        finalUserId = sessionUser.id;
       }
 
       // res.send(`BERHASIL DIINVEST!`);
@@ -308,7 +308,6 @@ class Controller {
         return res.redirect(`/companies?error=${error}`);
       }
 
-      // If the user has access, update the investment
       await investment.update({
         name,
         description,
